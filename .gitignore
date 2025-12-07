@@ -1,0 +1,8 @@
+.env
+__pycache__/
+/inputs/
+/outputs/
+.pkl
+
+__init__.py
+.ipynb_checkpoints/
