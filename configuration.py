@@ -11,11 +11,17 @@ class Settings(BaseSettings):
     input_dir: Path = base_dir / "inputs"
     output_dir: Path = base_dir / "outputs"
     json_filename: str = "evenements-publics-openagenda.json"
+    json_filename_clean: str = "evenements-publics-openagenda-clean.json"
 
     @property
     def json_full_path(self) -> Path:
         """Retourne le chemin complet du fichier JSON."""
         return self.input_dir / self.json_filename
+    
+    @property
+    def json_clean_full_path(self) -> Path:
+        """Retourne le chemin complet du fichier JSON Clean."""
+        return self.output_dir / self.json_filename_clean
 
     model_config = SettingsConfigDict(
         env_file=".env",
