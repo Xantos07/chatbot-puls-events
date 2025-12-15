@@ -7,7 +7,8 @@ class Settings(BaseSettings):
     api_limit: int = 100
     api_offset: int = 0
     base_dir: Path = Path(__file__).resolve().parent
-    
+    mistral_api_key: str = ""
+
     input_dir: Path = base_dir / "inputs"
     output_dir: Path = base_dir / "outputs"
     json_filename: str = "evenements-publics-openagenda.json"
