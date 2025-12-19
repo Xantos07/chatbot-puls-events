@@ -14,4 +14,5 @@ def indexation(documents, embeddings):
 
     index_path = settings.output_dir / settings.faiss_index_mistral
     db.save_local(index_path)
+    print(f"Index FAISS sauvegardé dans : {index_path}")
     
