@@ -6,12 +6,6 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from configuration import settings  
 from langchain_core.documents import Document
 
-api_key = settings.mistral_api_key 
-
-if not api_key:
-    raise ValueError("Clé API Mistral manquante !")
-
-
 # Exporter les chunks
 def chunking():
 
