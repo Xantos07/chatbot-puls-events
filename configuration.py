@@ -3,11 +3,16 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import HttpUrl
 
 class Settings(BaseSettings):
-    api_url: HttpUrl = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/evenements-publics-openagenda/records/"
-    api_limit: int = 100
-    api_offset: int = 0
+    open_agenda_api_url: HttpUrl = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/evenements-publics-openagenda/records/"
+    open_agenda_api_limit: int = 100
+    open_agenda_api_offset: int = 0
     base_dir: Path = Path(__file__).resolve().parent
     mistral_api_key: str = ""
+
+    mistral_chatbot_limit_tokens: int = 500
+    mistral_chatbot_top_p: float = 0.9
+    mistral_chatbot_temperature: float = 0.7
+    mistral_chatbot_max_messages_history: int = 10
 
     input_dir: Path = base_dir / "inputs"
     output_dir: Path = base_dir / "outputs"
