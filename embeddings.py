@@ -19,8 +19,9 @@ def get_mistral_embeddings():
     Returns:
         MistralAIEmbeddings: L'objet embeddings pour l'indexation.
     """
-    print("embeddings")
+
     embeddings = MistralAIEmbeddings(mistral_api_key=api_key)
+    print("Création embeddings avec MistralAI")
     return embeddings
 
 def embed(text: str):
