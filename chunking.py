@@ -6,9 +6,15 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from configuration import settings  
 from langchain_core.documents import Document
 
-# Exporter les chunks
 def chunking():
-
+    """Découpe le fichier texte en chunks et retourne une liste de documents.
+    
+    Returns:
+        list[Document]: Liste de documents créés à partir des chunks.
+    
+    Raises:
+        FileNotFoundError: Si le fichier evenements.txt n'existe pas.
+    """
     # Chemin du fichier texte
     txt_path = settings.output_dir / "evenements.txt"
 

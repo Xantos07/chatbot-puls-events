@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     output_dir: Path = base_dir / "outputs"
     json_filename: str = "evenements-publics-openagenda.json"
     json_filename_clean: str = "evenements-publics-openagenda-clean.json"
+    txt_filename: str = "evenements.txt"
+    faiss_index_mistral: str = "faiss_index_mistral"
 
     @property
     def json_full_path(self) -> Path:
