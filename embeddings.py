@@ -13,14 +13,25 @@ if not api_key:
 
 client = Mistral(api_key=api_key)
 
-def embed_documents():
-    #  embeddings
+def get_mistral_embeddings():
+    """Crée et retourne les embeddings MistralAI.
+    
+    Returns:
+        MistralAIEmbeddings: L'objet embeddings pour l'indexation.
+    """
     print("embeddings")
     embeddings = MistralAIEmbeddings(mistral_api_key=api_key)
     return embeddings
 
-# encodage de la question utilisateur en vecteur
 def embed(text: str):
+    """Encode le texte en vecteur d'embedding en utilisant MistralAI.
+    
+    Args:
+        text (str): Le texte à encoder.
+    
+    Returns:
+        np.ndarray: Le vecteur d'embedding.
+    """
     try:
         response = client.embeddings.create(
             model="mistral-embed",

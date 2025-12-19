@@ -2,10 +2,12 @@ import json
 from configuration import settings
 
 def export_to_txt():
+    """Exporte les événements du fichier JSON nettoyé vers un fichier texte formaté"""
+
     with open(settings.json_clean_full_path, 'r', encoding='utf-8') as f:
         events = json.load(f)
     
-    output_path = settings.output_dir / "evenements.txt"
+    output_path = settings.output_dir / settings.txt_filename
     
     with open(output_path, 'w', encoding='utf-8') as f:
         for i, event in enumerate(events):
