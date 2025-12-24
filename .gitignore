@@ -1,8 +1,12 @@
 .env
 __pycache__/
-/inputs/
-/outputs/
 .pkl
-
 __init__.py
 .ipynb_checkpoints/
+
+faiss_index_mistral/
+outputs/*.json
+outputs/*.txt
+inputs/*.json
+inputs/*.csv
+inputs/*.txt

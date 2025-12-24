@@ -4,7 +4,7 @@ from configuration import settings
 
 
 def main():
-    url = str(settings.api_url)
+    url = str(settings.open_agenda_api_url)
 
     print(f"-------------------------")
     print(f"Cible : {url}")
@@ -12,8 +12,8 @@ def main():
     print(f"-------------------------")
 
     all_rows = []
-    offset = 0
-    limit = settings.api_limit
+    offset = settings.open_agenda_api_offset
+    limit = settings.open_agenda_api_limit
 
     try:
         # obtenir le total
