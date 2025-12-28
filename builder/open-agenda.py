@@ -1,6 +1,6 @@
 import requests
 import json
-from configuration import settings  
+from configurations.configuration import settings  
 
 
 def main():

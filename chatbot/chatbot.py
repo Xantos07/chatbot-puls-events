@@ -1,9 +1,21 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from configurations.configuration import settings
+
 import os
 from langchain_community.vectorstores import FAISS
 from langchain_mistralai import MistralAIEmbeddings
 import streamlit as st
 from mistralai import Mistral
-from configuration import settings
+from prometheus_client import start_http_server
+import threading
+
+def start_metrics_server():
+    start_http_server(8000)
+
+threading.Thread(target=start_metrics_server, daemon=True).start()
 
 api_key = settings.mistral_api_key
 
@@ -28,7 +40,8 @@ except Exception as e:
 def load_system_prompt():
     """Charge le prompt système depuis garde-fou.txt."""
     try:
-        with open('garde-fou.txt', 'r', encoding='utf-8') as f:
+        garde_fou_path = os.path.join(os.path.dirname(__file__), 'garde-fou.txt')
+        with open(garde_fou_path, 'r', encoding='utf-8') as f:
             return f.read()
     except FileNotFoundError:
         st.error("Fichier 'garde-fou.txt' introuvable. Veuillez le créer pour définir le prompt système.")

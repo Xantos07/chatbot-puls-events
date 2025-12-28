@@ -1,6 +1,6 @@
 
 from langchain_community.vectorstores import FAISS
-from configuration import settings
+from configurations.configuration import settings
 
 def indexation(documents, embeddings):
     """Crée et sauvegarde l'index FAISS à partir des documents et embeddings.

@@ -3,7 +3,7 @@ Module de découpage de texte en chunks.
 """
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from configuration import settings  
+from configurations.configuration import settings  
 from langchain_core.documents import Document
 
 def chunking():

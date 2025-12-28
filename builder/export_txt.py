@@ -1,5 +1,5 @@
 import json
-from configuration import settings
+from configurations.configuration import settings
 
 def export_to_txt():
     """Exporte les événements du fichier JSON nettoyé vers un fichier texte formaté"""
