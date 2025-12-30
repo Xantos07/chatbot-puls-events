@@ -58,7 +58,7 @@ def main():
     st.markdown("Bienvenue! Posez vos questions sur les événements à venir.")
 	
     global db
-    db = FAISS.load_local(settings.faiss_index_mistral, embeddings=MistralAIEmbeddings(mistral_api_key=api_key), allow_dangerous_deserialization=True)
+    db = FAISS.load_local(settings.output_dir / settings.faiss_index_mistral, embeddings=MistralAIEmbeddings(mistral_api_key=api_key), allow_dangerous_deserialization=True)
 
     # historique des messages
     for message in st.session_state.messages:

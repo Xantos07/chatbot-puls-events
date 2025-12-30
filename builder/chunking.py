@@ -3,8 +3,11 @@ Module de découpage de texte en chunks.
 """
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from configurations.configuration import settings  
 from langchain_core.documents import Document
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from configurations.configuration import settings
 
 def chunking():
     """Découpe le fichier texte en chunks et retourne une liste de documents.
@@ -15,9 +18,11 @@ def chunking():
     Raises:
         FileNotFoundError: Si le fichier evenements.txt n'existe pas.
     """
+
     # Chemin du fichier texte
     txt_path = settings.output_dir / "evenements.txt"
-
+    print(f"txt_path: {txt_path}")
+    
     if not txt_path.exists():
         raise FileNotFoundError(f"Fichier introuvable : {txt_path}")
     
