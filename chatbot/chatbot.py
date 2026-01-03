@@ -9,13 +9,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_mistralai import MistralAIEmbeddings
 import streamlit as st
 from mistralai import Mistral
-from prometheus_client import start_http_server
-import threading
 
-def start_metrics_server():
-    start_http_server(8000)
-
-threading.Thread(target=start_metrics_server, daemon=True).start()
 
 api_key = settings.mistral_api_key
 
