@@ -50,13 +50,14 @@ def main():
             params = {
                 "limit": limit,
                 "offset": offset,
-                "where": (
-                    "location_region = 'Hauts-de-France' "
-                    "AND firstdate_begin >= '2024-12-01' "
-                    "AND firstdate_begin <= '2025-12-31' "
+                "where": build_where(
+                    "Hauts-de-France",
+                    "2024-12-01",
+                    "2025-12-31"
                 )
             }
 
+            print("Récupération des données")
             response = requests.get(url, params=params)
             response.raise_for_status()
 
@@ -91,6 +92,12 @@ def main():
     except IOError as e:
         print(f" Erreur fichier : {e}")
 
+def build_where(region, date_start, date_end):
+    return (
+        f"location_region = '{region}' "
+        f"AND firstdate_begin >= '{date_start}' "
+        f"AND firstdate_begin <= '{date_end}'"
+    )
 
 if __name__ == "__main__":
     main()
