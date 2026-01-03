@@ -4,7 +4,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from configurations.configuration import settings
 
-import os
 from langchain_community.vectorstores import FAISS
 from langchain_mistralai import MistralAIEmbeddings
 import streamlit as st
@@ -103,12 +102,23 @@ def rechercher_segments_pertinents(question, k=3):
     # Récupérer les documents les plus similaires
     docs = db.similarity_search(question, k=k)
     
-    # Extraire le texte pour le prompt
-    segments = [doc.page_content for doc in docs]
+    # Extraire le texte avec métadonnées enrichies pour le prompt
+    segments = []
+    for doc in docs:
+        # Construire un segment enrichi avec les métadonnées
+        segment = doc.page_content
+        metadata = doc.metadata
+        
+        if metadata:
+            segment += f"\n[Lieu: {metadata.get('location_name', 'N/A')} - {metadata.get('location_city', 'N/A')}]"
+            segment += f"\n[Date: {metadata.get('date_start', 'N/A')}]"
+            segment += f"\n[Région: {metadata.get('location_region', 'N/A')}]"
+        
+        segments.append(segment)
 
-    print("Segments pertinents récupérés :")
+    print("Segments pertinents récupérés avec métadonnées :")
     for i, doc in enumerate(docs):
-        print(f"{i+1}. {doc.metadata.get('title_fr', 'sans titre')} - {doc.metadata.get('location_city', '')}")
+        print(f"{i+1}. {doc.metadata.get('title', 'sans titre')} - {doc.metadata.get('location_city', '')} - {doc.metadata.get('date_start', '')}")
     
     return segments
 

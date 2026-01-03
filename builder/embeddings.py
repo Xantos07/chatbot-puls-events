@@ -1,11 +1,12 @@
+import sys
 from langchain_mistralai import MistralAIEmbeddings
 from mistralai import Mistral
-from pathlib import Path
-import numpy as np
 import os
-import sys
+from pathlib import Path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from configurations.configuration import settings
+import numpy as np
+
 
 api_key = settings.mistral_api_key
 
