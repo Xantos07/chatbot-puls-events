@@ -10,3 +10,5 @@ outputs/*.txt
 inputs/*.json
 inputs/*.csv
 inputs/*.txt
+
+.secrets
