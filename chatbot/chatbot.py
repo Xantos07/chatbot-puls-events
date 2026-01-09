@@ -1,9 +1,14 @@
+import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from configurations.configuration import settings
+
 from langchain_community.vectorstores import FAISS
 from langchain_mistralai import MistralAIEmbeddings
 import streamlit as st
 from mistralai import Mistral
-from configuration import settings
+
 
 api_key = settings.mistral_api_key
 
@@ -28,7 +33,8 @@ except Exception as e:
 def load_system_prompt():
     """Charge le prompt système depuis garde-fou.txt."""
     try:
-        with open('garde-fou.txt', 'r', encoding='utf-8') as f:
+        garde_fou_path = os.path.join(os.path.dirname(__file__), 'garde-fou.txt')
+        with open(garde_fou_path, 'r', encoding='utf-8') as f:
             return f.read()
     except FileNotFoundError:
         st.error("Fichier 'garde-fou.txt' introuvable. Veuillez le créer pour définir le prompt système.")
@@ -45,7 +51,7 @@ def main():
     st.markdown("Bienvenue! Posez vos questions sur les événements à venir.")
 	
     global db
-    db = FAISS.load_local(settings.faiss_index_mistral, embeddings=MistralAIEmbeddings(mistral_api_key=api_key), allow_dangerous_deserialization=True)
+    db = FAISS.load_local(settings.output_dir / settings.faiss_index_mistral, embeddings=MistralAIEmbeddings(mistral_api_key=api_key), allow_dangerous_deserialization=True)
 
     # historique des messages
     for message in st.session_state.messages:
@@ -96,12 +102,23 @@ def rechercher_segments_pertinents(question, k=3):
     # Récupérer les documents les plus similaires
     docs = db.similarity_search(question, k=k)
     
-    # Extraire le texte pour le prompt
-    segments = [doc.page_content for doc in docs]
+    # Extraire le texte avec métadonnées enrichies pour le prompt
+    segments = []
+    for doc in docs:
+        # Construire un segment enrichi avec les métadonnées
+        segment = doc.page_content
+        metadata = doc.metadata
+        
+        if metadata:
+            segment += f"\n[Lieu: {metadata.get('location_name', 'N/A')} - {metadata.get('location_city', 'N/A')}]"
+            segment += f"\n[Date: {metadata.get('date_start', 'N/A')}]"
+            segment += f"\n[Région: {metadata.get('location_region', 'N/A')}]"
+        
+        segments.append(segment)
 
-    print("Segments pertinents récupérés :")
+    print("Segments pertinents récupérés avec métadonnées :")
     for i, doc in enumerate(docs):
-        print(f"{i+1}. {doc.metadata.get('title_fr', 'sans titre')} - {doc.metadata.get('location_city', '')}")
+        print(f"{i+1}. {doc.metadata.get('title', 'sans titre')} - {doc.metadata.get('location_city', '')} - {doc.metadata.get('date_start', '')}")
     
     return segments
 

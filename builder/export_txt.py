@@ -1,5 +1,7 @@
 import json
-from configuration import settings
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from configurations.configuration import settings
 
 def export_to_txt():
     """Exporte les événements du fichier JSON nettoyé vers un fichier texte formaté"""

@@ -1,8 +1,10 @@
+import sys
 from langchain_mistralai import MistralAIEmbeddings
 from mistralai import Mistral
 import os
 from pathlib import Path
-from configuration import settings
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from configurations.configuration import settings
 import numpy as np
 
 
