@@ -9,9 +9,9 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from configurations.configuration import settings  
 from langchain_core.documents import Document
-from builder.embeddings import get_mistral_embeddings
 
-def chunking():
+
+def chunking(embeddings):
     """Découpe les événements JSON en chunks sémantiques avec métadonnées et retourne une liste de documents.
     
     Utilise un découpage sémantique basé sur NLP qui maintient la cohérence sémantique des segments
@@ -33,7 +33,6 @@ def chunking():
         events = json.load(f)
     
     # Initialiser le découpage sémantique avec embeddings
-    embeddings = get_mistral_embeddings()
     text_splitter = SemanticChunker(embeddings=embeddings, breakpoint_threshold_type="percentile")
     
     documents = []
