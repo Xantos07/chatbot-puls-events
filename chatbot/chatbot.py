@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from configurations.configuration import settings
@@ -77,6 +78,7 @@ def main():
                 )
                 
                 try:
+                    start_time = time.perf_counter()
                     response = client.chat.complete(
                     model="mistral-small-latest",  
                     messages=formatted_messages,
@@ -84,8 +86,10 @@ def main():
                     temperature=settings.mistral_chatbot_temperature,
                     top_p=settings.mistral_chatbot_top_p,
                     )
+                    api_time = time.perf_counter() - start_time
                     reponse = response.choices[0].message.content
 
+                    print(f"-----Temps API Mistral: {api_time:.3f}s")
                     print(f"reponse : {reponse}")
                     st.session_state.messages.append({"role": "assistant", "content": reponse})
                     st.markdown(reponse)
@@ -100,7 +104,10 @@ def rechercher_segments_pertinents(question, k=3):
         return []
 
     # Récupérer les documents les plus similaires
+    start_time = time.perf_counter()
     docs = db.similarity_search(question, k=k)
+    search_time = time.perf_counter() - start_time
+    print(f"-----Temps recherche FAISS: {search_time:.3f}s")
     
     # Extraire le texte avec métadonnées enrichies pour le prompt
     segments = []

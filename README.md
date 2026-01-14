@@ -1,21 +1,45 @@
 # chatbot-puls-events
 
-commande d'installation des dépendances dans l'environnement virtuel :
+commande d'installation et de build des dépendances dans l'environnement virtuel :
 
 ```bash
 pip install -r requirements.txt
 ```
 
+## Instructions pour importer et nettoyer les données OpenAgenda
+commande pour importer les données depuis l'API OpenAgenda :
+```bash
+python -m OpenAgendaAPI.open_agenda
+```
+
+commande pour lancer le jupyter notebook pour le nettoyage des données :
+```bash
+jupyter notebook OpenAgendaAPI/cleaner.ipynb
+```
+
+commande pour exporter les données proprement en txt :
+```bash
+python -m OpenAgendaAPI.export_txt
+```
+
+## Instructions pour lancer le build de la base Faiss
 commande pour build la base Faiss :
 
 ```bash
 python -m builder.builder
 ```
 
+## Instructions pour lancer le bot Streamlit
 commande pour lancer le bot :
 
 ```bash
 streamlit run chatbot/chatbot.py
+```
+
+commande pour lancer les tests unitaires :
+
+```bash
+.\venv\Scripts\python.exe -m pytest test/unit_test.py -v
 ```
 
 ## Partie workflows GitHub Actions
