@@ -10,6 +10,8 @@ from langchain_mistralai import MistralAIEmbeddings
 import streamlit as st
 from mistralai import Mistral
 
+###  chatbot.py à recfactoriser 
+
 
 api_key = settings.mistral_api_key
 
@@ -32,6 +34,8 @@ except Exception as e:
 # déplacer dans un autre script ? 
 # mettre le garde fou txt obligatoire pour éviter le brut ? 
 def load_system_prompt():
+
+    # écrasé par construire_prompt_session niveau construction du prompt à corriger
     """Charge le prompt système depuis garde-fou.txt."""
     try:
         garde_fou_path = os.path.join(os.path.dirname(__file__), 'garde-fou.txt')
