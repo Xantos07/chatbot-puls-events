@@ -1,10 +1,27 @@
 # chatbot-puls-events
 
+création d'un environnement virtuel python:
+```
+python -m venv venv
+```
+
+Activation de l'environnement virtuel :
+- Sur Windows :
+```
+bash.\venv\Scripts\activate
+``` 
+- Sur macOS/Linux :
+```
+source venv/bin/activate
+```
+
 commande d'installation et de build des dépendances dans l'environnement virtuel :
 
 ```bash
 pip install -r requirements.txt
 ```
+
+# 1er étape : Importer et nettoyer les données OpenAgenda
 
 ## Instructions pour importer et nettoyer les données OpenAgenda
 commande pour importer les données depuis l'API OpenAgenda :
@@ -22,6 +39,7 @@ commande pour exporter les données proprement en txt :
 python -m OpenAgendaAPI.export_txt
 ```
 
+# 2ème étape : Build de la base Faiss et lancement du bot Streamlit
 ## Instructions pour lancer le build de la base Faiss
 commande pour build la base Faiss :
 
@@ -36,11 +54,18 @@ commande pour lancer le bot :
 streamlit run chatbot/chatbot.py
 ```
 
+# 3ème étape : Tests unitaires
+## Instructions pour lancer les tests unitaires
+
 commande pour lancer les tests unitaires :
+La bonne pratique est d'exécuter les tests lors d'une Pull Request pour s'assurer que les modifications n'introduisent pas d'erreurs
+Cela évite toutes erreurs ou oublies avant de merger une branche de travail vers une branche principale.
 
 ```bash
 .\venv\Scripts\python.exe -m pytest test/unit_test.py -v
 ```
+
+
 
 ## Partie workflows GitHub Actions
 
@@ -53,6 +78,11 @@ Les workflows GitHub Actions présents dans ce dépôt sont conçus pour automat
 
 ## Tester avec ACT 
 
+Il faut un .secrets file pour les tests locaux avec ACT, contenant la ligne suivante :  
+DISCORD_WEBHOOK_URL=VOTRE_URL_DE_WEBHOOK_DISCORD
+MISTRAL_API_KEY=VOTRE_CLE_API_MISTRAL
+
+```
 ### Tester la publication d'une release
 ```bash
 act -e event-release.json release --secret-file .secrets
@@ -62,6 +92,12 @@ act -e event-release.json release --secret-file .secrets
 ```bash
 act -e event-push.json push --secret-file .secrets
 ```
+
+### Tester une pull request
+```bash 
+act -e event-pull_request.json pull_request --secret-file .secrets
+```
+
 
 ## Configuration des secrets
 
