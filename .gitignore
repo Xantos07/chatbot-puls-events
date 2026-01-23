@@ -12,3 +12,4 @@ inputs/*.csv
 inputs/*.txt
 
 .secrets
+*.pdf

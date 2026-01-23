@@ -22,6 +22,7 @@ def main():
         # obtenir le total
         # "location_region = 'Hauts-de-France' "
         # seulement 1 an
+        # mettre des variables parametrables, pas de magic number!
         params = {
             "limit": limit,
             "offset": 0,

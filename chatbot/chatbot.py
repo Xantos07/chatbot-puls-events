@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from configurations.configuration import settings
@@ -8,6 +9,8 @@ from langchain_community.vectorstores import FAISS
 from langchain_mistralai import MistralAIEmbeddings
 import streamlit as st
 from mistralai import Mistral
+
+###  chatbot.py à recfactoriser 
 
 
 api_key = settings.mistral_api_key
@@ -31,6 +34,8 @@ except Exception as e:
 # déplacer dans un autre script ? 
 # mettre le garde fou txt obligatoire pour éviter le brut ? 
 def load_system_prompt():
+
+    # écrasé par construire_prompt_session niveau construction du prompt à corriger
     """Charge le prompt système depuis garde-fou.txt."""
     try:
         garde_fou_path = os.path.join(os.path.dirname(__file__), 'garde-fou.txt')
@@ -77,6 +82,7 @@ def main():
                 )
                 
                 try:
+                    start_time = time.perf_counter()
                     response = client.chat.complete(
                     model="mistral-small-latest",  
                     messages=formatted_messages,
@@ -84,8 +90,10 @@ def main():
                     temperature=settings.mistral_chatbot_temperature,
                     top_p=settings.mistral_chatbot_top_p,
                     )
+                    api_time = time.perf_counter() - start_time
                     reponse = response.choices[0].message.content
 
+                    print(f"-----Temps API Mistral: {api_time:.3f}s")
                     print(f"reponse : {reponse}")
                     st.session_state.messages.append({"role": "assistant", "content": reponse})
                     st.markdown(reponse)
@@ -100,7 +108,10 @@ def rechercher_segments_pertinents(question, k=3):
         return []
 
     # Récupérer les documents les plus similaires
+    start_time = time.perf_counter()
     docs = db.similarity_search(question, k=k)
+    search_time = time.perf_counter() - start_time
+    print(f"-----Temps recherche FAISS: {search_time:.3f}s")
     
     # Extraire le texte avec métadonnées enrichies pour le prompt
     segments = []
