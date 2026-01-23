@@ -21,13 +21,12 @@ jobs:
           
           echo "📋 PR: $HEAD => $BASE par $AUTHOR"
           
-          # Validation du format de branche
-          if ! [[ "$HEAD" =~ ^(feature|bugfix|hotfix|release|dev|test|chore|docs|refactor)/[a-z0-9._-]+$ ]]; then
+          if ! [[ "$HEAD" =~ ^(feature|bugfix|hotfix|release|dev|test|chore|docs|refactor)/[a-z0-9._-]+$ ]] && [[ "$HEAD" != "development" ]] && [[ "$HEAD" != "develop" ]]; then
             echo "::error::❌ Nom invalide: $HEAD. Format: type/description (ex: feature/add-auth)"
             exit 1
           fi
           echo "✅ Nom de branche valide"
-          
+                    
           # Règles de merge vers main
           if [[ "$BASE" == "main" ]] && ! [[ "$HEAD" =~ ^(release|hotfix)/.+ ]]; then
             echo "::error::❌ Seuls release/* et hotfix/* peuvent merger vers main"
