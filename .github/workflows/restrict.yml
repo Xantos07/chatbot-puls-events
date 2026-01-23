@@ -41,8 +41,8 @@ jobs:
           fi
           
           # Règles de merge vers release
-          if [[ "$BASE" =~ ^release/.+ ]] && ! [[ "$HEAD" =~ ^bugfix/.+ ]]; then
-            echo "::error::❌ Seuls bugfix/* peuvent merger vers release/*"
+          if [[ "$BASE" =~ ^release/.+ ]] && ! [[ "$HEAD" =~ ^bugfix/.+ ]] && [[ "$HEAD" != "development" ]] && [[ "$HEAD" != "develop" ]]; then
+            echo "::error::❌ Seuls bugfix/*, development et develop peuvent merger vers release/*"
             exit 1
           fi
           
