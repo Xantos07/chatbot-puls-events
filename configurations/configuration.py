@@ -46,6 +46,11 @@ class Settings(BaseSettings):
         """Retourne le chemin complet du fichier JSON Clean."""
         return self.output_dir / self.json_filename_clean
 
+    @property
+    def txt_full_path(self) -> Path:
+        """Retourne le chemin complet du fichier TXT."""
+        return self.output_dir / self.txt_filename
+    
     model_config = SettingsConfigDict(
         env_file=str(PROJECT_ROOT / ".env"),
         env_file_encoding="utf-8",

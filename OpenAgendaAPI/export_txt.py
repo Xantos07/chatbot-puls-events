@@ -1,3 +1,8 @@
+'''
+Script d'exportation des événements OpenAgenda vers un fichier texte formaté.
+mais inutile pour le chunking actuel.
+'''
+
 import json
 import os
 import sys
