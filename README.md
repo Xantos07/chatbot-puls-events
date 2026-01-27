@@ -34,11 +34,6 @@ commande pour lancer le jupyter notebook pour le nettoyage des données :
 jupyter notebook OpenAgendaAPI/cleaner.ipynb
 ```
 
-commande pour exporter les données proprement en txt :
-```bash
-python -m OpenAgendaAPI.export_txt
-```
-
 # 2ème étape : Build de la base Faiss et lancement du bot Streamlit
 ## Instructions pour lancer le build de la base Faiss
 commande pour build la base Faiss :
@@ -51,7 +46,7 @@ python -m builder.builder
 commande pour lancer le bot :
 
 ```bash
-streamlit run chatbot/chatbot.py
+streamlit run chatbot/chatbot_streamlit.py
 ```
 
 # 3ème étape : Tests unitaires
