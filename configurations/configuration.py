@@ -20,7 +20,8 @@ class Settings(BaseSettings):
     json_filename_clean: str = "evenements-publics-openagenda-clean.json"
     txt_filename: str = "evenements.txt"
     faiss_index_mistral: str = "faiss_index_mistral"
-
+    garde_fou_filename: str = "garde_fou.txt"
+    
     @property
     def base_dir(self) -> Path:
         """Retourne le répertoire racine du projet."""
@@ -46,6 +47,22 @@ class Settings(BaseSettings):
         """Retourne le chemin complet du fichier JSON Clean."""
         return self.output_dir / self.json_filename_clean
 
+    @property
+    def txt_full_path(self) -> Path:
+        """Retourne le chemin complet du fichier TXT."""
+        return self.output_dir / self.txt_filename
+    
+
+    @property
+    def chatbot(self) -> Path:
+        """Retourne le répertoire du chatbot."""
+        return PROJECT_ROOT / "chatbot"
+
+    @property
+    def garde_fou_path(self) -> Path:
+        """Retourne le chemin complet du fichier TXT."""
+        return self.chatbot / self.garde_fou_filename
+    
     model_config = SettingsConfigDict(
         env_file=str(PROJECT_ROOT / ".env"),
         env_file_encoding="utf-8",
