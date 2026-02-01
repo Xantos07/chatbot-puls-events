@@ -12,6 +12,9 @@ from builder.embeddings import get_mistral_embeddings
 from configurations.configuration import settings
 from langchain_core.documents import Document
 
+from langchain_community.vectorstores import FAISS
+from chatbot.chatbot_logic import ChatbotManager 
+
 @pytest.fixture
 def real_embeddings():
     """
@@ -131,3 +134,31 @@ def test_indexation(real_embeddings):
         mock_db_instance.save_local.assert_called_once()
         
         print("\n Test Indexation réussi (FAISS mocké).")
+
+
+
+def test_chatbot_reponse(real_embeddings, test_json_file):
+
+    with patch('builder.chunking.settings') as mock_settings:
+        mock_settings.json_clean_full_path = test_json_file
+        docs = chunking(real_embeddings)
+    
+    # Création d'une VectorStore temporaire en mémoire RAM pour le test
+    vector_store_memory = FAISS.from_documents(docs, real_embeddings)
+    
+    # On injecte notre fausse DB dans le manager
+    bot = ChatbotManager(override_db=vector_store_memory)
+    
+    # TEST DE LA RÉPONSE
+    query = "Où se passent les comptines ?"
+    
+    # On simule un historique vide
+    reponse = bot.generate_response(query, [])
+    
+    print(f"\nRéponse du bot : {reponse}")
+    
+    # vérifie que la réponse contient les bonnes infos de localisation
+    assert "Moulins" in reponse or "Lille" in reponse, "Le bot ne mentionne pas le bon lieu"
+    assert len(reponse) > 20, "La réponse est trop courte"
+    
+    print(" Test validé : Le bot a lu le document JSON temporaire et à répondu correctement.")
