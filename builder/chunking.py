@@ -3,19 +3,19 @@ Module de découpage de texte en chunks.
 """
 
 import json
-from langchain_experimental.text_splitter import SemanticChunker
 import os
 import sys
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from configurations.configuration import settings  
+from configurations.configuration import settings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
-
-
 def chunking(embeddings):
-    """Découpe les événements JSON en chunks sémantiques avec métadonnées et retourne une liste de documents.
+
+    """Découpe les événements JSON en chunks avec métadonnées et retourne une liste de documents.
     
-    Utilise un découpage sémantique basé sur NLP qui maintient la cohérence sémantique des segments
-    sans chevauchement, contrairement au découpage récursif.
+    Utilise un découpage récursif rapide qui maintient la cohérence des segments.
+    Plus rapide que SemanticChunker car n'utilise pas d'appels API.
     
     Returns:
         list[Document]: Liste de documents créés à partir des chunks avec métadonnées.
@@ -32,13 +32,21 @@ def chunking(embeddings):
     with open(json_path, 'r', encoding='utf-8') as f:
         events = json.load(f)
     
-    # Initialiser le découpage sémantique avec embeddings
-    text_splitter = SemanticChunker(embeddings=embeddings, breakpoint_threshold_type="percentile")
+    # Initialisation du splitter
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,  # Taille de chaque segment
+        chunk_overlap=200  # Chevauchement entre les segments
+    )
     
     documents = []
+    total_events = len(events)
+    print(f"Découpage de {total_events} événements en cours...")
     
-    for event in events:
-        # Créer le texte de l'événement
+    for idx, event in enumerate(events, 1):
+        # tous les 10 événements
+        if idx % 10 == 0 or idx == 1:  
+            print(f"  --  Traitement événement {idx}/{total_events} ({idx*100//total_events}%)")
+        # créer le texte de l'événement
         text_parts = []
         
         if event.get('title_fr'):
