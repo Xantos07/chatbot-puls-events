@@ -1,6 +1,6 @@
-from builder.chunking import chunking
-from builder.embeddings import get_mistral_embeddings
-from builder.indexation import indexation
+from chunking import chunking
+from embeddings import get_mistral_embeddings
+from indexation import indexation
 
 def chat_bot_builder():
     """Construit les données pour le chatbot :
